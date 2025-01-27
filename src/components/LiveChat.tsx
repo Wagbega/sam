@@ -178,31 +178,32 @@ export default function LiveChat({ streamId, onClose }: Props) {
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSubmit} className="p-4 border-t">
-        <div className="flex space-x-2">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder={isAuthenticated ? "Type a message..." : "Sign in to chat"}
-            className="flex-grow px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            disabled={!isAuthenticated || isLoading}
-          />
-          <button
-            type="submit"
-            disabled={!isAuthenticated || isLoading}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 whitespace-nowrap"
-          >
-            <Send className="h-4 w-4" />
-            <span className="hidden sm:inline">Send</span>
-          </button>
-        </div>
-        {!isAuthenticated && (
-          <p className="mt-2 text-sm text-gray-500 text-center">
-            Please sign in to participate in the chat
-          </p>
-        )}
-      </form>
+      <form onSubmit={handleSubmit} className="p-4 border-t sticky bottom-0 bg-white">
+  <div className="flex space-x-2">
+    <input
+      type="text"
+      value={message}
+      onChange={(e) => setMessage(e.target.value)}
+      placeholder={isAuthenticated ? "Type a message..." : "Sign in to chat"}
+      className="flex-grow px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      disabled={!isAuthenticated || isLoading}
+      style={{ WebkitAppearance: 'none' }} // Fix for iOS
+    />
+    <button
+      type="submit"
+      disabled={!isAuthenticated || isLoading}
+      className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 whitespace-nowrap"
+    >
+      <Send className="h-4 w-4" />
+      <span className="hidden sm:inline">Send</span>
+    </button>
+  </div>
+  {!isAuthenticated && (
+    <p className="mt-2 text-sm text-gray-500 text-center">
+      Please sign in to participate in the chat
+    </p>
+  )}
+</form>
     </div>
   );
 }
