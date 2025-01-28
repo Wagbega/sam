@@ -20,6 +20,7 @@ export default function LiveStream() {
   const [showShare, setShowShare] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [playing, setPlaying] = useState(true);
+  const [isMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
     fetchStreams();
@@ -41,6 +42,10 @@ export default function LiveStream() {
 
       const streamsMap: Record<string, Stream> = {};
       data?.forEach((stream: Stream) => {
+        // Convert YouTube URLs to embed URLs for mobile compatibility
+        if (stream.url.includes('youtube.com/watch?v=')) {
+          stream.url = stream.url.replace('watch?v=', 'embed/');
+        }
         streamsMap[stream.id] = stream;
       });
 
@@ -201,6 +206,7 @@ export default function LiveStream() {
                         controls
                         autoPlay={playing}
                         className="w-3/4 max-w-md"
+                        playsInline
                       />
                     </div>
                   ) : (
@@ -211,6 +217,15 @@ export default function LiveStream() {
                       controls
                       playing={playing}
                       playsinline
+                      config={{
+                        youtube: {
+                          playerVars: {
+                            playsinline: 1,
+                            modestbranding: 1,
+                            origin: window.location.origin
+                          }
+                        }
+                      }}
                     />
                   )}
                 </div>
