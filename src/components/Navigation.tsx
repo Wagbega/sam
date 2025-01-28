@@ -74,11 +74,8 @@ export default function Navigation() {
                 alt="Church Logo" 
                 className="h-8 w-8 sm:h-10 sm:w-10 rounded-full"
               />
-              <span className="font-bold text-lg sm:text-xl text-gray-900 hidden sm:inline">
+              <span className="font-bold text-lg sm:text-xl text-gray-900">
                 Idasa Model Parish
-              </span>
-              <span className="font-bold text-lg text-gray-900 sm:hidden">
-                IMP
               </span>
             </Link>
           </div>
