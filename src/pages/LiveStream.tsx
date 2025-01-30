@@ -185,7 +185,7 @@ export default function LiveStream() {
               showinfo: 0,
               iv_load_policy: 3,
               fs: 1,
-              webkit-playsinline: 1,
+              'webkit-playsinline': 1,
             }
           },
           file: {
