@@ -5,6 +5,34 @@ import { Church, Video, Calendar, Archive, Menu, X, User, MessageCircle, Info } 
 export default function Navigation() {
   const [isOpen, setIsOpen] = React.useState(false);
   const location = useLocation();
+  const [deferredPrompt, setDeferredPrompt] = React.useState<any>(null);
+  const [showInstallButton, setShowInstallButton] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallButton(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+      setShowInstallButton(false);
+    }
+    setDeferredPrompt(null);
+  };
 
   const navItems = [
     { 
@@ -55,7 +83,6 @@ export default function Navigation() {
     setIsOpen(false);
     if (location.pathname === to) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
     }
   };
 
@@ -70,15 +97,28 @@ export default function Navigation() {
               onClick={() => handleNavClick('/')}
             >
               <img 
-                src="https://res.cloudinary.com/softcraft/image/upload/v1737961968/favicon_d8ib5h.png"
+                src="/favicon.png"
                 alt="Church Logo" 
-                className="h-8 w-8 sm:h-10 sm:w-10 rounded-full"
+                className="h-8 w-8 sm:h-10 sm:w-10"
+                onError={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  img.src = 'https://res.cloudinary.com/softcraft/image/upload/v1737961968/favicon_d8ib5h.png';
+                }}
               />
               <span className="font-bold text-lg sm:text-xl text-gray-900">
                 Idasa Model Parish
               </span>
             </Link>
           </div>
+
+          {showInstallButton && (
+            <button
+              onClick={handleInstallClick}
+              className="hidden md:flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              Install App
+            </button>
+          )}
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
