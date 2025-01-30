@@ -9,9 +9,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.png'],
       manifest: {
-        name: 'Grace Church',
-        short_name: 'Grace Church',
-        description: 'Grace Church - Connect, Worship, Grow',
+        name: 'C&S IDASA',
+        short_name: 'C&S IDASA',
+        description: 'C&S IDASA - Connect, Worship, Grow',
         theme_color: '#4f46e5',
         background_color: '#ffffff',
         display: 'standalone',
