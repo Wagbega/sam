@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Church, Video, Calendar, Archive, Menu, X, User, MessageCircle, Info } from 'lucide-react';
@@ -71,7 +70,7 @@ export default function Navigation() {
               onClick={() => handleNavClick('/')}
             >
               <img 
-                src="https://res.cloudinary.com/softcraft/image/upload/v1737961968/favicon_d8ib5h.png"
+                src="/favicon.png"
                 alt="Church Logo" 
                 className="h-8 w-8 sm:h-10 sm:w-10 rounded-full"
               />
