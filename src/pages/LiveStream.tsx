@@ -42,10 +42,6 @@ export default function LiveStream() {
 
       const streamsMap: Record<string, Stream> = {};
       data?.forEach((stream: Stream) => {
-        // Convert YouTube URLs to embed URLs for mobile compatibility
-        if (stream.url.includes('youtube.com/watch?v=')) {
-          stream.url = stream.url.replace('watch?v=', 'embed/');
-        }
         streamsMap[stream.id] = stream;
       });
 
@@ -61,46 +57,29 @@ export default function LiveStream() {
     }
   };
 
-  const handleShare = () => {
-    const shareUrl = window.location.href;
-    const title = activeStream ? `Live Service at ${streams[activeStream].name}` : 'Live Service';
-    
-    return (
-      <div className="absolute right-0 top-12 bg-white rounded-lg shadow-lg p-2 z-50">
-        <div className="flex flex-col space-y-2">
-          <FacebookShareButton 
-            url={shareUrl} 
-            quote={title}
-            onClick={() => setShowShare(false)}
-          >
-            <div className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded cursor-pointer">
-              Share on Facebook
-            </div>
-          </FacebookShareButton>
-          
-          <TwitterShareButton 
-            url={shareUrl} 
-            title={title}
-            onClick={() => setShowShare(false)}
-          >
-            <div className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded cursor-pointer">
-              Share on Twitter
-            </div>
-          </TwitterShareButton>
-          
-          <WhatsappShareButton 
-            url={shareUrl} 
-            title={title}
-            onClick={() => setShowShare(false)}
-          >
-            <div className="w-full text-left px-4 py-2 hover:bg-gray-100 rounded cursor-pointer">
-              Share on WhatsApp
-            </div>
-          </WhatsappShareButton>
-        </div>
+  const ShareMenu = ({ url, title }: { url: string; title: string }) => (
+    <div className="absolute right-0 top-12 bg-white rounded-lg shadow-lg p-2 z-50">
+      <div className="flex flex-col space-y-2 min-w-[200px]">
+        <FacebookShareButton url={url} quote={title}>
+          <div className="flex items-center space-x-2 w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
+            <span className="text-blue-600">Share on Facebook</span>
+          </div>
+        </FacebookShareButton>
+        
+        <TwitterShareButton url={url} title={title}>
+          <div className="flex items-center space-x-2 w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
+            <span className="text-blue-400">Share on Twitter</span>
+          </div>
+        </TwitterShareButton>
+        
+        <WhatsappShareButton url={url} title={title}>
+          <div className="flex items-center space-x-2 w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
+            <span className="text-green-500">Share on WhatsApp</span>
+          </div>
+        </WhatsappShareButton>
       </div>
-    );
-  };
+    </div>
+  );
 
   // Close share menu when clicking outside
   React.useEffect(() => {
@@ -137,6 +116,9 @@ export default function LiveStream() {
     );
   }
 
+  const currentStream = streams[activeStream];
+  const isAudioStream = currentStream?.name === 'FM Mode';
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -163,7 +145,7 @@ export default function LiveStream() {
                     ))}
                   </div>
                   <div className="flex items-center justify-end space-x-4 text-gray-600">
-                    {streams[activeStream]?.name === 'FM Mode' ? (
+                    {isAudioStream ? (
                       <Volume2 className="h-5 w-5" />
                     ) : (
                       <>
@@ -199,10 +181,10 @@ export default function LiveStream() {
               {/* Video/Audio Player */}
               <div className="relative w-full h-0 pb-[56.25%] bg-black">
                 <div className="absolute inset-0">
-                  {streams[activeStream]?.name === 'FM Mode' ? (
+                  {isAudioStream ? (
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-indigo-600 to-purple-600">
                       <audio
-                        src={streams[activeStream]?.url}
+                        src={currentStream.url}
                         controls
                         autoPlay={playing}
                         className="w-3/4 max-w-md"
@@ -211,7 +193,7 @@ export default function LiveStream() {
                     </div>
                   ) : (
                     <ReactPlayer
-                      url={streams[activeStream]?.url}
+                      url={currentStream.url}
                       width="100%"
                       height="100%"
                       controls
@@ -230,19 +212,28 @@ export default function LiveStream() {
                   )}
                 </div>
               </div>
+
+              {showShare && (
+                <div data-share-menu>
+                  <ShareMenu
+                    url={window.location.href}
+                    title={`Live Service at ${currentStream.name}`}
+                  />
+                </div>
+              )}
               
               {/* Stream Info */}
               <div className="p-6">
-                <h2 className="text-2xl font-semibold mb-2">{streams[activeStream]?.name}</h2>
-                <p className="text-gray-600 mb-6">{streams[activeStream]?.description}</p>
+                <h2 className="text-2xl font-semibold mb-2">{currentStream.name}</h2>
+                <p className="text-gray-600 mb-6">{currentStream.description}</p>
                 
                 <div className="border-t pt-6">
                   <h3 className="font-semibold mb-4">Service Times:</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {[
-                      { day: 'Sunday', time: '9:00 AM', name: 'Morning Service' },
-                      { day: 'Sunday', time: '11:00 AM', name: 'Main Service' },
-                      { day: 'Wednesday', time: '7:00 PM', name: 'Bible Study' },
+                      { day: 'Sunday', time: '9:00 AM', name: 'Bible Study' },
+                      { day: 'Sunday', time: '10:00 AM', name: 'Main Service' },
+                      { day: 'Wednesday', time: '9:00 AM', name: 'Midweek Service' },
                     ].map((service, index) => (
                       <div key={index} className="bg-gray-50 p-4 rounded-lg">
                         <h4 className="font-medium text-indigo-600">{service.name}</h4>
