@@ -207,7 +207,12 @@ export default function LiveStream() {
                         autoPlay={playing}
                         className="w-3/4 max-w-md"
                         playsInline
-                      />
+                        controlsList="nodownload"
+                        preload="auto"
+                      >
+                        <source src={streams[activeStream]?.url} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                      </audio>
                     </div>
                   ) : (
                     <ReactPlayer
@@ -222,9 +227,23 @@ export default function LiveStream() {
                           playerVars: {
                             playsinline: 1,
                             modestbranding: 1,
-                            origin: window.location.origin
+                            origin: window.location.origin,
+                            enablejsapi: 1,
+                            rel: 0
                           }
+                        },
+                        file: {
+                          attributes: {
+                            controlsList: 'nodownload',
+                            playsInline: true,
+                            webkitPlaysInline: true
+                          },
+                          forceVideo: true
                         }
+                      }}
+                      onError={(e) => {
+                        console.error('Player error:', e);
+                        toast.error('Error playing media');
                       }}
                     />
                   )}
