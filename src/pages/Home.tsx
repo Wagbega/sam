@@ -96,52 +96,78 @@ export default function Home() {
     console.log(`Navigating ${direction}`);
   };
 
-  return (
+ return (
     <div className="min-h-screen bg-gray-50">
       <Toaster position="top-right" />
 
-      {/* Hero Section */}
+      {/* Enhanced Hero Section */}
       <div className="relative bg-gradient-to-br from-indigo-600 via-indigo-700 to-indigo-800 text-white overflow-hidden">
-        {/* Background pattern */}
+        {/* Animated background patterns */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.07)_1px,transparent_0)] bg-[length:20px_20px] opacity-10"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.07)_1px,transparent_0)] bg-[length:20px_20px] opacity-10 animate-pulse"></div>
+          <div className="absolute inset-0">
+            <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-indigo-500/10 to-transparent transform -skew-x-12"></div>
+            <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-indigo-500/10 to-transparent transform skew-x-12"></div>
+          </div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 py-24 sm:py-32">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-200">
-              Welcome to The Sanctuary Of Holy Spirit
+            {/* Subtle glow effect behind the title */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-64 bg-indigo-500/20 blur-3xl rounded-full"></div>
+            
+            {/* Enhanced title with animated gradient */}
+            <h1 className="relative text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
+              <span className="inline-block animate-gradient bg-gradient-to-r from-white via-indigo-200 to-white bg-clip-text text-transparent bg-[length:200%_auto]">
+                Welcome to The Sanctuary
+              </span>
+              <span className="block text-white">Of Holy Spirit</span>
             </h1>
-            <p className="text-xl sm:text-2xl text-indigo-100 mb-12 max-w-3xl mx-auto">
+
+            {/* Enhanced subtitle with better contrast */}
+            <p className="text-xl sm:text-2xl text-indigo-100 mb-12 max-w-3xl mx-auto font-light">
               Connect, Worship, Grow - Join our community in praising God and growing in faith together.
             </p>
+
+            {/* Enhanced CTA section with hover effects */}
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 to="/live"
-                className="inline-flex items-center px-8 py-4 rounded-lg font-semibold bg-white text-indigo-600 hover:bg-indigo-50 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-200"
+                className="group inline-flex items-center px-8 py-4 rounded-lg font-semibold bg-white text-indigo-600 hover:bg-indigo-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
-                <Video className="h-5 w-5 mr-2" />
-                Watch Live
+                <Video className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                <span>Watch Live</span>
+                <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </Link>
+
               <Link
                 to="/events"
-                className="inline-flex items-center px-8 py-4 rounded-lg font-semibold border-2 border-white text-white hover:bg-white hover:text-indigo-600 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-200"
+                className="group inline-flex items-center px-8 py-4 rounded-lg font-semibold border-2 border-white text-white hover:bg-white hover:text-indigo-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
-                <Calendar className="h-5 w-5 mr-2" />
-                Upcoming Events
+                <Calendar className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                <span>Upcoming Events</span>
+                <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </Link>
+
               <button
                 onClick={() => setShowDonateModal(true)}
-                className="inline-flex items-center px-8 py-4 rounded-lg font-semibold bg-indigo-500 text-white hover:bg-indigo-400 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-200"
+                className="group inline-flex items-center px-8 py-4 rounded-lg font-semibold bg-indigo-500 text-white hover:bg-indigo-400 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
-                <Heart className="h-5 w-5 mr-2" />
-                Donate
+                <Heart className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                <span>Donate</span>
+                <span className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </button>
+            </div>
+
+            {/* Added service times */}
+            <div className="mt-12 inline-flex items-center px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm">
+              <Clock className="h-5 w-5 mr-3 text-indigo-200" />
+              <span className="text-indigo-100">Join us every Sunday: 9:00 AM & 12:00 PM</span>
             </div>
           </div>
         </div>
 
-        {/* Decorative bottom wave */}
+        {/* Enhanced decorative bottom wave */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg className="w-full h-12 sm:h-24" viewBox="0 0 1440 74" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 24.9999C240 74.9999 480 74.9999 720 49.9999C960 24.9999 1200 -25.0001 1440 24.9999V73.9999H0V24.9999Z" fill="currentColor" className="text-gray-50" />
